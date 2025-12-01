@@ -275,12 +275,12 @@ class TodoApp {
             this.toggleNotifBtn.disabled = false;
         } else if (permission === 'denied') {
             console.log('Setting status to: Blocked');
-            this.notificationStatus.textContent = '❌ Blocked - Enable in browser settings';
+            this.notificationStatus.textContent = '❌ Blocked - Click lock icon in address bar to allow';
             this.notificationStatus.style.color = '#ef4444'; // danger-color
-            this.toggleNotifBtn.textContent = 'Blocked';
+            this.toggleNotifBtn.textContent = 'How to Fix';
             this.toggleNotifBtn.classList.add('disabled');
             this.toggleNotifBtn.classList.remove('enabled');
-            this.toggleNotifBtn.disabled = true;
+            this.toggleNotifBtn.disabled = false;
         } else {
             console.log('Setting status to: Not enabled');
             this.notificationStatus.textContent = '⚠️ Not enabled';
@@ -296,6 +296,12 @@ class TodoApp {
         console.log('toggleNotifications clicked');
         const localEnabled = localStorage.getItem('notificationsEnabled') === 'true';
         console.log('Current state - Permission:', Notification.permission, 'Local:', localEnabled);
+        
+        // If permission is denied, show instructions
+        if (Notification.permission === 'denied') {
+            alert('Notifications are blocked!\n\nTo enable:\n\n1. Click the lock icon (🔒) in your address bar\n2. Find "Notifications" and change to "Allow"\n3. Refresh this page\n\nOr open browser settings and allow notifications for this site.');
+            return;
+        }
         
         // If already enabled, disable them
         if (Notification.permission === 'granted' && localEnabled) {
